@@ -1,6 +1,5 @@
-using LatticeBoltzmannModel
-using Test
+using Test, LatticeBoltzmannModel
 
-@testset "LatticeBoltzmannModel.jl" begin
-    # Write your tests here.
+@testset "point" begin
+    include("point.jl")
 end
