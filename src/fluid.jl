@@ -15,4 +15,4 @@ D2Q9 lattice Boltzmann model, which is defined in 2-dimensional space
 
 struct D2Q9 <: AbstractLatticeBoltzmannConfiguration{2, 9} end
 
-# `directions` returns
+# `directions` returns the all the directions
