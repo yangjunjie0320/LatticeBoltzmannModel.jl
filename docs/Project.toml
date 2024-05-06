@@ -1,0 +1,3 @@
+[deps]
+Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
+LatticeBoltzmannModel = "900fe088-44c0-48e4-b9a7-8711e8a5ef19"
