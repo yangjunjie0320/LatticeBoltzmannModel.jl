@@ -7,7 +7,10 @@ module LatticeBoltzmannModel
     export Point, Point2D, Point3D, Point, distance
     include("point.jl")
 
-    # TODO: Export the Fluid struct and related functions
+    # Export the D2Q9 struct and related functions
+    export D2Q9, LatticeBoltzmann, step!
+    export get_equilibrium_cell, get_momentum
+    export curl, example_d2q9, density
     include("fluid.jl")
 
 end
