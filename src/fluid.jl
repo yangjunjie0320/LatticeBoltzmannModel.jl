@@ -99,8 +99,8 @@ function stream(
         t = ntuple(N) do k
             dk = directions(config)[k]
             m, n = size(grid_old)
-            i2 = mod1(i + dk[1], m)
-            j2 = mod1(j + dk[2], n)
+            i2 = mod1(i - dk[1], m)
+            j2 = mod1(j - dk[2], n)
             
             if barrier[i2, j2]
                 density(grid_old[i, j], flip_direction_index(config, k))
