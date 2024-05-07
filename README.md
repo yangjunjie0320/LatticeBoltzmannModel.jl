@@ -12,11 +12,3 @@ for fluid dynamics simulation in `julia`.  The code closely follows the correspo
 ## Contents
 * D2Q9 model - a 2D LBM with 9 velocities
 * Fluid dynamics visualization
-
-## Get started
-
-Please clone this repository to your local machine, and then run the following commands in the terminal,
-```bash
-$ make init-LatticeBoltzmannModel  # Initialize the environment
-$ make example-LatticeBoltzmannModel  # Run the examples
-```
