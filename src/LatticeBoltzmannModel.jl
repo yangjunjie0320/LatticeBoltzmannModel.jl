@@ -11,6 +11,7 @@ module LatticeBoltzmannModel
     export D2Q9, LatticeBoltzmann, step!
     export get_equilibrium_cell, get_momentum
     export curl, example_d2q9, density
+    export Cell, weights, directions, flip_direction_index
     include("fluid.jl")
 
 end

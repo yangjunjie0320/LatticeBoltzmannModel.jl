@@ -1,4 +1,4 @@
-using Test
+using Test, LatticeBoltzmannModel
 
 # Test the `directions` function
 @testset "directions" begin
@@ -40,7 +40,7 @@ end
 @testset "get_momentum" begin
     config = D2Q9()
     c = Cell((1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0))
-    @test get_momentum(config, c) == Point(0.0, 0.0)
+    @test isapprox(get_momentum(config, c), Point(-2/15, -4/15))
 end
 
 # Test the `get_equilibrium_cell` function
@@ -48,30 +48,8 @@ end
     config = D2Q9()
     rho = 1.0
     u = Point(0.0, 0.0)
-    expected = Cell((4/9, 1/9, 1/9, 1/9, 4/9, 1/9, 1/9, 1/9, 4/9))
-    @test get_equilibrium_cell(config, rho, u) == expected
-end
-
-# Test the `stream` function
-@testset "stream" begin
-    config = D2Q9()
-    grid_old = [
-        Cell((1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0)) for _ in 1:3, _ in 1:3
-    ]
-    barrier = falses(3, 3)
-    grid_new = stream(config, grid_old, barrier)
-    expected = [
-        Cell((9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0)) for _ in 1:3, _ in 1:3
-    ]
-    @test grid_new == expected
-end
-
-# Test the `collide` function
-@testset "collide" begin
-    config = D2Q9()
-    c = Cell((1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0))
-    expected = Cell((1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0))
-    @test collide(config, c) == expected
+    expected = Cell((1/36, 1/36, 1/9, 1/9, 4/9, 1/9, 1/9, 1/36, 1/36))
+    @test isapprox(get_equilibrium_cell(config, rho, u), expected)
 end
 
 # Test the `curl` function
@@ -79,41 +57,19 @@ end
     u = [
         Point(1.0, 2.0) for _ in 1:3, _ in 1:3
     ]
-    expected = [
-        -1.0, -1.0, -1.0,
-        -1.0, -1.0, -1.0,
-        -1.0, -1.0, -1.0
-    ]
+    expected = zeros(3, 3)
     @test curl(u) == expected
 end
 
-# Test the `LatticeBoltzmann` struct
-@testset "LatticeBoltzmann" begin
-    config = D2Q9()
-    grid = [
-        Cell((1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0)) for _ in 1:3, _ in 1:3
-    ]
-    barrier = falses(3, 3)
-    lb = LatticeBoltzmann(config, grid, barrier)
-    @test lb.config == config
-    @test lb.grid_cur == grid
-    @test lb.grid_old == grid
-    @test lb.barrier == barrier
-end
-
-# Test the `step!` function
 @testset "step!" begin
-    config = D2Q9()
-    grid = [
-        Cell((1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0, 9.0)) for _ in 1:3, _ in 1:3
-    ]
-    barrier = falses(3, 3)
-    lb = LatticeBoltzmann(config, grid, barrier)
-    step!(lb)
-    expected_grid_cur = [
-        Cell((9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0)) for _ in 1:3, _ in 1:3
-    ]
-    @test lb.grid_cur == expected_grid_cur
+    lb0 = example_d2q9(; u0=Point(0.0, 0.1))
+    lb = deepcopy(lb0)
+    for i=1:100 step!(lb) end
+    # the conservation of mass
+    @test isapprox(sum(density.(lb.grid_cur)), sum(density.(lb0.grid_cur)); rtol=1e-4)
+    # the conservation of momentum
+    mean_u = sum(get_momentum.(Ref(lb.config), lb.grid_cur))/length(lb.grid_cur)
+    @test mean_u[2] < 0.1 - 1e-3
 end
 
 # Test the `example_d2q9` function

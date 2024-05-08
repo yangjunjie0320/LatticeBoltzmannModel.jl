@@ -89,7 +89,7 @@ function stream(
     config::AbstractLatticeBoltzmannConfiguration{2, N},
     grid_old::AbstractMatrix{C}, barrier::AbstractMatrix{Bool}, 
     # grid_new::AbstractMatrix{C} # output FIXME: what is the best practice?
-) where {N, C}
+)::AbstractMatrix{C} where {N, C} 
     grid_new = similar(grid_old)
 
     @inbounds for ci in CartesianIndices(grid_old)
