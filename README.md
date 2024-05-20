@@ -12,3 +12,8 @@ for fluid dynamics simulation in `julia`.  The code closely follows the correspo
 ## Contents
 * D2Q9 model - a 2D LBM with 9 velocities
 * Fluid dynamics visualization
+
+## Results
+The video below show the evolution of a simple fluid dynamics simulation using LBM,
+where a circular obstacle is placed in the middle of the domain.
+<>

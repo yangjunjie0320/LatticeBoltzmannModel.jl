@@ -27,7 +27,6 @@ unweighted/images/*.tex
 *.thm
 *.so
 website/notebooks/*.html
-*.mp4
 Manifest.toml
 .vscode/
 /*.png

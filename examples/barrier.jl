@@ -2,12 +2,10 @@ using CairoMakie: RGBA # for visualization
 using CairoMakie
 using LatticeBoltzmannModel # our package
 
-# 设置 LBM 模型
 lb = example_d2q9()
 vorticity = Observable(curl(get_momentum.(Ref(lb.config), lb.grid_cur))')
 fig, ax, plot = image(vorticity, colormap = :jet, colorrange = (-0.1, 0.1))
 
-# 绘制障碍
 barrier_img = map(x -> x ? RGBA(0, 0, 0, 1) : RGBA(0, 0, 0, 0), lb.barrier)
 image!(ax, barrier_img')
 
